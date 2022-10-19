@@ -15,7 +15,6 @@
 
 - has_many :items
 - has_many :purchases
-- belongs_to :card
 
 
 ## items テーブル
@@ -53,12 +52,12 @@
 | block                | string     | null: false                    |
 | building             | string     |                                |
 | phone_number         | string     | null: false                    |
-| purchases            | references | null: false, foreign_key: true |
+| purchase             | references | null: false, foreign_key: true |
 
 ### Association
 
 - belongs_to_active_hash :prefecture
-- belongs_to :purchases
+- belongs_to :purchase
 
 ## purchases テーブル
 
