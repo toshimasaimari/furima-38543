@@ -54,7 +54,7 @@ RSpec.describe User, type: :model do
         @user.password = nil
         @user.password_confirmation = nil
         @user.valid?
-        expect(@user.errors.full_messages).to include "Password can't be blank", "Password is invalid"
+        expect(@user.errors.full_messages).to include "Password can't be blank"
       end
       it "passwordが6文字以上でないと登録できない" do
         @user.password = '123ab'
@@ -62,9 +62,21 @@ RSpec.describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include "Password is too short (minimum is 6 characters)"
       end
-      it "passwordは半角英数字混合でないと登録できない" do
+      it "passwordは半角数字だけでは登録できない" do
         @user.password = '123456'
         @user.password_confirmation = '123456'
+        @user.valid?
+        expect(@user.errors.full_messages).to include "Password is invalid"
+      end
+      it "passwordは半角英字だけでは登録できない" do
+        @user.password = 'abcdef'
+        @user.password_confirmation = 'abcdef'
+        @user.valid?
+        expect(@user.errors.full_messages).to include "Password is invalid"
+      end
+      it "passwordは全角英数字混合では登録できない" do
+        @user.password = '１２３ａｂｅ'
+        @user.password_confirmation = '１２３ａｂｅ'
         @user.valid?
         expect(@user.errors.full_messages).to include "Password is invalid"
       end
@@ -77,12 +89,12 @@ RSpec.describe User, type: :model do
       it "お名前(全角)は、名字が空だと登録できない" do
         @user.last_name = nil
         @user.valid?
-        expect(@user.errors.full_messages).to include "Last name can't be blank", "Last name is invalid"
+        expect(@user.errors.full_messages).to include "Last name can't be blank"
       end
       it "お名前(全角)は、名前が空だと登録できない" do
         @user.first_name = nil
         @user.valid?
-        expect(@user.errors.full_messages).to include "First name can't be blank", "First name is invalid"
+        expect(@user.errors.full_messages).to include "First name can't be blank"
       end
       it " お名前(全角)は、全角数字では登録できない" do
         @user.first_name = '１'
@@ -117,12 +129,12 @@ RSpec.describe User, type: :model do
       it "お名前カナ(全角)は、名字が空では登録できない" do
         @user.last_name = nil
         @user.valid?
-        expect(@user.errors.full_messages).to include "Last name can't be blank", "Last name is invalid"
+        expect(@user.errors.full_messages).to include "Last name can't be blank"
       end
       it "お名前カナ(全角)は、名前が空では登録できない" do
         @user.first_name = nil
         @user.valid?
-        expect(@user.errors.full_messages).to include "First name can't be blank", "First name is invalid"
+        expect(@user.errors.full_messages).to include "First name can't be blank"
       end
       it "お名前カナ(全角)は、全角（漢字）では登録できない" do
         @user.first_name_kana = '漢字'
