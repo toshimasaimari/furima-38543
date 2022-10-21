@@ -14,3 +14,13 @@ require("channels")
 //
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
+
+window.addEventListener('load', function(){
+const productCost = document.getElementById("item-price")
+productCost.addEventListener('input', function(){
+  const productTaxCost = document.getElementById("add-tax-price")
+  productTaxCost.innerHTML = Math.round(productCost.value * 0.1 )
+  const productTaxFree = document.getElementById("profit")
+  productTaxFree.innerHTML = Math.round(productCost.value - Math.round(productCost.value * 0.1 ))
+})
+})
