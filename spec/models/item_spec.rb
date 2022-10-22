@@ -81,6 +81,11 @@ RSpec.describe Item, type: :model do
         @item.valid?
         expect(@item.errors.full_messages).to include "User must exist"
       end
+      it "商品説明が空では登録できない" do
+        @item.product_description = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include "Product description can't be blank"
+      end
     end
   end
 end
