@@ -17,7 +17,7 @@ RSpec.describe PurchaseAddress, type: :model do
         expect(@purchase_address).to be_valid
       end
     end
-
+    
     context '内容に問題がある場合' do
       it 'post_codeが空だと保存できない' do
         @purchase_address.post_code = nil
@@ -26,6 +26,11 @@ RSpec.describe PurchaseAddress, type: :model do
       end
       it 'post_codeが「3桁ハイフン4桁」で半角数字の正しい形式でないと保存できない' do
         @purchase_address.post_code = '1234-567'
+        @purchase_address.valid?
+        expect(@purchase_address.errors.full_messages).to include("Post code is invalid")
+      end
+      it 'post_codeは半角ハイフンを含む形でなければ保存できない' do
+        @purchase_address.post_code = '123−4567'
         @purchase_address.valid?
         expect(@purchase_address.errors.full_messages).to include("Post code is invalid")
       end
